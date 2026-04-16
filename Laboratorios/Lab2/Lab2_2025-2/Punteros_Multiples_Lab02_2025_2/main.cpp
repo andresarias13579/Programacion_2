@@ -18,5 +18,8 @@ int main() {
     char ***etiquetas;
     cargarComentarios("ArchivoDeDatos/comentarios.csv",comentarios,etiquetas);
 
+    imprimirReporte("ArchivoDeReporte/reporte.txt",categorias,streamers,fechasPromedios,tiempoRepSeguidores,
+        comentarios,etiquetas);
+
     return 0;
 }

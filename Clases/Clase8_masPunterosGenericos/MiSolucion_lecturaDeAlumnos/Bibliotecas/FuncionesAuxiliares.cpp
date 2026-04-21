@@ -23,7 +23,7 @@ void cargarAlumnos(void *&al,const char*nombArch) {
         if (arch.eof()) break;
         arch.get();
         nombreAlumno = leeCadenaExacta(arch,'\n');
-        if (numDatos == capacidad) incrementarMemoria(alumnos,capacidad,numDatos);
+        if (capacidad == 0 || numDatos == capacidad-1) incrementarMemoria(alumnos,capacidad,numDatos);
         asignamosDatos(alumnos[numDatos],codAlumnos,nombreAlumno);
         numDatos++;
     }
@@ -103,11 +103,11 @@ void leeLoDemas(ifstream &arch,char *&codCurso,int &nota) {
     arch>>nota;
     arch.get();
 }
-void asignamosCursos(void *&al,char *codCurso,int nota,int &numCursos,int &capacidad) {
+void asignamosCursos(void *al,char *codCurso,int nota,int &numCursos,int &capacidad) {
     void **alumno = (void**)al;
     void **curso = (void**)alumno[CUR],**notas = (void**)alumno[NOT];
     int capacidadCurso = capacidad,capacidadNota = capacidad;
-    if (capacidad == numCursos) {
+    if ( capacidad==0 ||capacidad-1 == numCursos) {
         incrementarMemoria(curso,capacidadCurso,numCursos);
         incrementarMemoria(notas,capacidadNota,numCursos);
         capacidad = capacidadCurso;
@@ -118,7 +118,7 @@ void asignamosCursos(void *&al,char *codCurso,int nota,int &numCursos,int &capac
     curso[numCursos] = codCurso;
     alumno[CUR] = curso;
     alumno[NOT] = notas;
-    al = alumno;
+    // al = alumno;
     numCursos++;
 }
 
@@ -132,12 +132,12 @@ char *leeCadenaExacta(ifstream &arch,char delimitador) {
 }
 void incrementarMemoria(void **&alumnos,int &capacidad,int numDatos) {
     if (capacidad == 0) {
-        alumnos = new void*[5+1]{};
+        alumnos = new void*[5]{};
         capacidad = 5;
     }
     else {
         void **auxiliar;
-        auxiliar = new void*[capacidad+5+1]{};
+        auxiliar = new void*[capacidad+5]{};
         for (int i = 0; i < numDatos; ++i) auxiliar[i] = alumnos[i];
         delete [] alumnos;
         alumnos = auxiliar;

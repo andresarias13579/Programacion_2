@@ -1,0 +1,21 @@
+      B001                Espresso Doble         C         1       2.5       120Un espresso intenso con una mezcla de Café Arábica y Robusta para un sabor equilibrado y fuerte
+      B002                   Café Latte         C         1       3.2       150Suave y cremoso elaborado con una mezcla de cafés y leche vaporizada para una textura delicada
+      B003           Cappuccino Clásico         C         1         3       140Clásico cappuccino con una perfecta proporción de espresso leche espumosa y un toque de cacao
+      B004                     Americano         C         1         2       130Un café Robusta diluido ofreciendo un sabor fuerte pero menos concentrado
+      B005     Mocha de Chocolate Oscuro         H         1       3.8       100Una deliciosa combinación de espresso y chocolate oscuro coronado con crema batida
+      B006    Chocolate Caliente Cremoso         H         1         4       110Chocolate caliente espeso con un toque cremoso ideal para los días fríos
+      B007              Té Verde Matcha         T         1       2.7        90Té verde matcha en polvo con un sabor terroso y ligeramente dulce
+      B008           Té Negro Earl Grey         T         1       2.5        85Té negro de alta calidad con el aroma cítrico del aceite de bergamota
+      B009       Infusión de Manzanilla         I         1       2.2        60Suave infusión de flores de manzanilla perfecta para relajarse
+      B010          Infusión de Lavanda         I         1       2.5        50Relajante infusión de lavanda seca ideal para calmar los sentidos
+      B011    Café con Leche Descremada         C         1         3       115Café suave con leche descremada para un sabor ligero pero satisfactorio
+      B012               Café Cold Brew         C         1       3.5        95Café infusionado en frío con un sabor suave y menos ácido
+      B013          Té Rooibos Vainilla         T         1       2.6        70Infusión de rooibos con un toque de vainilla naturalmente dulce y sin cafeína
+      B014                    Chai Latte         T         1       3.2        75Mezcla especiada de té negro leche vaporizada y especias como canela y cardamomo
+      B015      Té de Jengibre con Miel         I         1       2.8        65Infusión picante de jengibre fresco y miel de abeja para calentar el cuerpo
+      B016          Chocolate con Canela         H         1       3.9        80  Delicioso chocolate caliente con un toque de canela molida
+      B017Infusión de Jengibre y Nuez Moscada         I         1       3.1        55Infusión exótica de jengibre fresco y nuez moscada para un sabor cálido y especiado
+      B018  Latte de Almendra y Vainilla         C         1       3.6        90Café latte con leche de almendra y un toque de vainilla líquida perfecto para intolerantes a la lactosa
+      B019 Té Verde con Jengibre y Miel         T         1         3        60Fusión de té verde con jengibre fresco y un toque de miel para una combinación refrescante y cálida
+      B020     Chocolate Blanco Caliente         H         1       4.2        70Dulce y cremoso chocolate blanco caliente una indulgencia suave
+      B021                    Flat White         C         1       3.5        80Café fuerte con una capa fina de leche vaporizada ideal para los amantes del café más intenso

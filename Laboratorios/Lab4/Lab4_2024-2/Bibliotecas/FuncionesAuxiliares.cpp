@@ -169,40 +169,120 @@ void leeDatosBebidasInsumos(ifstream &arch,char *&codInsumo,int &cantidad,char *
     arch.get();
     unidad = leeCadenaExacta(arch,'\n');
 }
-void actulizamosInsumosBebidas(void *men,void *inv,int cantidad,char *unidad,int &capacidades) {
-    void **inventario = (void **)inv,**menus = (void **)men;
-    actualizarInventario((double*)inventario[CANRi],cantidad);
-    actualizarInsumo(menus,(double*)inventario[CANDi],cantidad,unidad,inventario,capacidades);
+// Ojo: agregué cantReq a los parámetros de actualizarInsumo para hacer la validación más fácil
+void actulizamosInsumosBebidas(void *men, void *inv, int cantidad, char *unidad, int &capacidades) {
+    void **inventario = (void **)inv, **menus = (void **)men;
+
+    // 1. Extraemos las ventas estimadas de esta bebida
+    int *cantVentasPtr = (int*)menus[CANTm];
+    int ventasEstimadas = *cantVentasPtr;
+
+    // 2. Extraemos los punteros de cantidades del inventario
+    double *cantReq = (double*)inventario[CANRi];
+    double *cantDisponible = (double*)inventario[CANDi];
+
+    // 3. Actualizamos el requerimiento global en el inventario
+    actualizarInventario(cantReq, cantidad, ventasEstimadas);
+
+    // 4. Actualizamos el arreglo interno de la bebida
+    actualizarInsumo(menus, cantDisponible, cantidad, unidad, inventario, capacidades, cantReq);
 }
-void actualizarInventario(double *cantReq,int cantidad) {
-    *cantReq += (double)cantidad/1000;
+void actualizarInventario(double *cantReq, int cantidad, int ventasEstimadas) {
+    // cantidad (ej. 10g) * ventasEstimadas (ej. 120) = 1200g.
+    // Lo dividimos entre 1000 para pasarlo a kg (1.2kg) y lo sumamos al requerimiento total.
+    *cantReq += (double)(cantidad * ventasEstimadas) / 1000.0;
 }
-void actualizarInsumo(void **menus,double *cantDisponible,int cantidad,char *unidad,void **inventario,
-    int &capacidades) {
-    int numDatos=0;
+// Actualizar la firma para recibir 'cantReq'
+void actualizarInsumo(void **menus, double *cantDisponible, int cantidad, char *unidad, void **inventario,
+    int &capacidades, double *cantReq) {
+
+    int numDatos = 0;
     void **insumos = (void**)menus[INSm];
+
     if (insumos == nullptr) numDatos = 0;
     else while (insumos[numDatos] != nullptr) numDatos++;
-    if (numDatos == 0 || numDatos == capacidades-1) incrementarMemoria(insumos,capacidades,numDatos);
+
+    if (numDatos == 0 || numDatos == capacidades-1) incrementarMemoria(insumos, capacidades, numDatos);
+
     void *disponibilidad = menus[DISm];
     bool *dis = (bool *)disponibilidad;
-    asignamosInsumos(insumos[numDatos],inventario,cantDisponible,cantidad,unidad,dis);
+
+    // Le pasamos el cantReq en lugar de hacer cálculos extraños adentro
+    asignamosInsumos(insumos[numDatos], inventario, cantDisponible, cantidad, unidad, dis, cantReq);
+
+    // ¡No olvides devolver el arreglo al menú como te mencioné antes!
+    menus[INSm] = insumos;
 }
-void asignamosInsumos(void *insumos,void **inventario,double *cantDisponible,int cantidad,char *unidad,
-    bool *&disponibilidad) {
-    void **datosInsumo;
-    if (datosInsumo == nullptr) {
-        datosInsumo = new void *[3]{};
-    }
+
+// Nueva versión limpia de asignamosInsumos
+void asignamosInsumos(void *&insumos, void **inventario, double *cantDisponible, int cantidad, char *unidad,
+    bool *&disponibilidad, double *cantReq) {
+
+    void **datosInsumo = new void *[3]{};
+
     datosInsumo[0] = inventario;
+
     double *cantidadDin = new double;
-    *cantidadDin = (double)cantidad;
-    // cout << *(double *) datosInsumo[1];
+    *cantidadDin = (double)cantidad; // Aquí se guarda la cantidad unitaria (ej. 10) según la Figura 3
     datosInsumo[1] = cantidadDin;
-    // if (datosInsumo[1] == nullptr) datosInsumo[1] = new double;
-    // *(double*)datosInsumo[1] += *cantidadDin;
+
     datosInsumo[2] = unidad;
-    if (*(double*)datosInsumo[1] > *cantDisponible*1000) *disponibilidad = false;
+
+    // LA PRUEBA DE FUEGO: Si lo que requiere el inventario total superó lo disponible...
+    if (*cantReq > *cantDisponible) {
+        *disponibilidad = false; // ...deshabilitamos la bebida
+    }
+
+    insumos = datosInsumo;
+}
+
+void reporteMenu(const char* nombArch, void *men) {
+    ofstream arch(nombArch, ios::out);
+    if (not arch.is_open()) {
+        cout << "Error al abrir el archivo " << nombArch << endl;
+        exit(1);
+    }
+
+    // Imprimimos la cabecera exacta del reporte
+    arch << "====================== Menú del día ======================" << endl;
+
+    void **menus = (void **)men;
+    int numDatos = 0;
+
+    // Recorremos el menú hasta encontrar el puntero nulo final
+    while (menus[numDatos] != nullptr) {
+        imprimirBebida(arch, menus[numDatos]);
+        arch << "----------------------------------------------------------" << endl;
+        numDatos++;
+    }
+}
+
+void imprimirBebida(ofstream &arch, void *beb) {
+    void **bebida = (void **)beb;
+
+    // Extrayendo los datos que necesitamos para el reporte
+    char *nombre = (char*)bebida[NOMm];
+    char *descripcion = (char*)bebida[DESm];
+    char *tipo = (char*)bebida[TIPm];
+    double *precio = (double*)bebida[PREm];
+    bool *disponible = (bool*)bebida[DISm];
+
+    // Decodificando el tipo de bebida
+    const char *tipoStr = "";
+    if (tipo[0] == 'C') tipoStr = "Café";
+    else if (tipo[0] == 'T') tipoStr = "Té";
+    else if (tipo[0] == 'I') tipoStr = "Infusión";
+    else if (tipo[0] == 'H') tipoStr = "Chocolate";
+
+    // Imprimiendo con el formato solicitado
+    arch << tipoStr << ": " << nombre << endl;
+    arch << descripcion << endl;
+
+    // fixed y setprecision(2) aseguran que salga S/2.50 y no S/2.5
+    arch << "Precio: S/" << fixed << setprecision(2) << *precio << endl;
+
+    // Operador ternario para imprimir "Si" o "No" en lugar de 1 o 0
+    arch << "Disponible: " << (*disponible ? "Si" : "No") << endl;
 }
 
 char *leeCadenaExacta(ifstream &arch,char delimitador) {
@@ -227,7 +307,7 @@ void incrementarMemoria(void **&inventario,int &capacidad,int numDatos) {
     }
 }
 int buscarBebida(char *codBebida,void **menus) {
-    int numDatos;
+    int numDatos=0;
     while (menus[numDatos] != nullptr) numDatos++;
     for (int i = 0; i < numDatos; ++i) {
         void **bebida = (void **)menus[i];
@@ -237,7 +317,7 @@ int buscarBebida(char *codBebida,void **menus) {
     return NO_ENCONTRADO;
 }
 int buscarInsumo(char *codInsumo,void **inventario) {
-    int numDatos;
+    int numDatos=0;
     while (inventario[numDatos] != nullptr) numDatos++;
     for (int i = 0; i < numDatos; ++i) {
         void **insumo = (void **)inventario[i];

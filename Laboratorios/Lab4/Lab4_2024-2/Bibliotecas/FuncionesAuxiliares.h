@@ -21,12 +21,15 @@ void mostramosMenu(ofstream &arch,void *men);
 
 void actualizarMenu(const char*nombArch,void *inv,void *men);
 void leeDatosBebidasInsumos(ifstream &arch,char *&codInsumo,int &cantidad,char *&unidad);
-void actulizamosInsumosBebidas(void *men,void *inv,int cantidad,char *unidad,int &capacidades);
-void actualizarInventario(double *cantReq,int cantidad);
-void actualizarInsumo(void **menus,double *cantDisponible,int cantidad,char *unidad,void **inventario,
-    int &capacidades);
-void asignamosInsumos(void *insumos,void **inventario,double *cantDisponible,int cantidad,char *unidad,
-    bool *&disponibilidad);
+void actulizamosInsumosBebidas(void *men, void *inv, int cantidad, char *unidad, int &capacidades);
+void actualizarInventario(double *cantReq, int cantidad, int ventasEstimadas);
+void actualizarInsumo(void **menus, double *cantDisponible, int cantidad, char *unidad, void **inventario,
+    int &capacidades, double *cantReq);
+void asignamosInsumos(void *&insumos, void **inventario, double *cantDisponible, int cantidad, char *unidad,
+    bool *&disponibilidad, double *cantReq);
+
+void reporteMenu(const char* nombArch, void *men);
+void imprimirBebida(ofstream &arch, void *beb);
 
 char *leeCadenaExacta(ifstream &arch,char delimitador);
 void incrementarMemoria(void **&inventario,int &capacidad,int numDatos);

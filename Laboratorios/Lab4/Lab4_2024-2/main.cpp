@@ -14,6 +14,7 @@ int main() {
     probarCargarMenu("ArchivoDeReporte/prueba-menu.txt",menu);
 
     actualizarMenu("ArchivosDeDatos/insumos-bebidas.csv",inventario,menu);
+    reporteMenu("ArchivoDeReporte/menu.txt",menu);
 
     return 0;
 }

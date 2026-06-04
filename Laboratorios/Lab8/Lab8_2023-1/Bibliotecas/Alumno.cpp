@@ -41,6 +41,7 @@ void Alumno::operator=(const Alumno &alum) {
 void Alumno::inicializar() {
     nombre = nullptr;
     total = 0;
+    codigo = 0;
 }
 
 int Alumno::get_codigo() const {

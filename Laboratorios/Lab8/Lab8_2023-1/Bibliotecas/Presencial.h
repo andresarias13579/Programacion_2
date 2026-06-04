@@ -37,6 +37,8 @@ public:
     void leePresencial(ifstream &arch);
 
     void actualizar(double monto);
+
+    void mostrar(ofstream &acrh);
 };
 
 #endif //LAB8_2023_1_PRESENCIAL_H

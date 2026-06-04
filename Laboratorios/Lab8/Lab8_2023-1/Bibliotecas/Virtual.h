@@ -36,6 +36,8 @@ public:
     void leeVirtual(ifstream &arch);
 
     void actualizar(double monto);
+
+    void mostrar(ofstream &arch);
 };
 
 #endif //LAB8_2023_1_VIRTUAL_H

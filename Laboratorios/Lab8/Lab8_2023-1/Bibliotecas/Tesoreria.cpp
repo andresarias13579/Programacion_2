@@ -52,7 +52,10 @@ void Tesoreria::cargaalumnos(const char *nombArch) {
             numSemi++;
         }else if (tipoAlum=='V') {
             virtuaal.leeVirtual(arch);
+            // char lice[20];
+            // cout<<virtuaal.get_codigo()<<"  "<<virtuaal.get_licencia(lice)<<endl;
             lvirtual[numVirtuaal]=virtuaal;
+            // cout<<lvirtual[numVirtuaal].get_codigo()<<"  "<<lvirtual[numVirtuaal].get_licencia(lice)<<endl;
             numVirtuaal++;
         } else while (arch.get()!='\n');
     }
@@ -93,8 +96,18 @@ void Tesoreria::imprime(const char *nombArch) {
         cout<<"Error al abrir el archivo"<<nombArch<<endl;
         exit(1);
     }
-    arch<<"Codigo"<<setw(15);
+    arch<<"Codigo"<<setw(19)<<"Nombre"<<setw(36)<<"Escala"<<setw(15)<<"Licencia"
+        <<setw(7)<<"Total"<<endl;
+    arch<<setfill('=')<<setw(200)<<"="<<setfill(' ')<<endl;
     for (int i = 0; lpresencial[i].get_codigo(); ++i) {
-
+        lpresencial[i].mostrar(arch);
+    }
+    for (int i = 0; lsemipresencial[i].get_codigo(); ++i) {
+        lsemipresencial[i].mostrar(arch);
+    }
+    for (int i = 0; lvirtual[i].get_codigo(); ++i) {
+        lvirtual[i].mostrar(arch);
+        // char lice[20];
+        // cout << lvirtual[i].get_codigo()<<"  "<<lvirtual[i].get_licencia(lice) << endl;
     }
 }

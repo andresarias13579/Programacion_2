@@ -1,6 +1,7 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 #include "Alumno.h"
 
@@ -26,7 +27,7 @@ Virtual::Virtual(const Virtual &vir) {
 
 void Virtual::operator=(const Virtual &vir) {
     char lice[100];
-    set_nombre(vir.get_licencia(lice));
+    set_licencia(vir.get_licencia(lice));
     set_total(vir.get_total());
     Alumno::operator=(vir);
 }
@@ -70,7 +71,7 @@ void Virtual::leeVirtual(ifstream &arch) {
     char nombre[100],c,lice[100];
     arch>>cod>>c;
     arch.getline(nombre,100,',');
-    arch>>esc>>c;
+    arch>>esc>>c>>ws;
     arch.getline(lice,100,'\n');
     set_licencia(lice);
     set_codigo(cod);
@@ -80,4 +81,10 @@ void Virtual::leeVirtual(ifstream &arch) {
 
 void Virtual::actualizar(double monto) {
     set_total(monto + 100);
+}
+
+void Virtual::mostrar(ofstream &arch) {
+    char nombre[100],lice[100];
+    arch<<get_codigo()<<setw(10)<<" "<<left<<setw(35)<<get_nombre(nombre)<<right
+        <<setw(5)<<get_escala()<<setw(15)<<get_licencia(lice)<<setw(10)<<get_total()<<endl;
 }

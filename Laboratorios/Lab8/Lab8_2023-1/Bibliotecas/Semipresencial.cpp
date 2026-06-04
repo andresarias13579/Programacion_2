@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 #include "Semipresencial.h"
@@ -70,4 +71,10 @@ void Semipresencial::leeSemipresencial(ifstream &arch) {
 
 void Semipresencial::actualizar(double monto) {
     set_total(monto*(1-descuento/100));
+}
+
+void Semipresencial::mostrar(ofstream &arch) {
+    char nombre[100];
+    arch<<get_codigo()<<setw(10)<<" "<<left<<setw(35)<<get_nombre(nombre)<<right
+        <<setw(5)<<get_escala()<<setw(25)<<get_total()<<endl;
 }

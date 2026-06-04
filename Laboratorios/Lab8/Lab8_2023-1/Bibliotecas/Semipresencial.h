@@ -38,6 +38,8 @@ public:
     void leeSemipresencial(ifstream &arch);
 
     void actualizar(double monto);
+
+    void mostrar(ofstream &arch);
 };
 
 #endif //LAB8_2023_1_SEMIPRESENCIAL_H

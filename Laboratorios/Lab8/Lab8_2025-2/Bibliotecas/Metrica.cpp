@@ -93,14 +93,16 @@ void Metrica::leer(ifstream &arch) {
     arch.get();
     arch.getline(desc,100,',');
     leeFecha(arch,fecha_cal);
-    arch>>c;
     leeFecha(arch,fecha_exp);
     set_descripcion(desc);
     set_fecha_calculo(fecha_cal);
     set_fecha_expiracion(fecha_exp);
     set_id(idStream);
-    if (fecha_cal < fecha_exp) estado = true;
-    else estado = false;
+    if (20251114 > fecha_exp) {
+        estado = false;
+    } else {
+        estado = true;
+    }
 }
 
 void Metrica::leeFecha(ifstream &arch, int &fecha) {
@@ -111,7 +113,8 @@ void Metrica::leeFecha(ifstream &arch, int &fecha) {
 }
 
 void Metrica::imprimir(ofstream &arch) const {
-    arch<<id<<setw(2)<<" "<<left<<setw(25)<<descripcion<<right<<setw(12)<<fecha_calculo<<setw(12)<<fecha_expiracion;
+    arch<<setfill('0')<<setw(4)<<id<<setfill(' ')<<setw(2)<<" "<<left<<setw(25)<<descripcion<<right
+        <<setw(12)<<fecha_calculo<<setw(12)<<fecha_expiracion;
     if (estado) arch<<setw(2)<<" "<<left<<setw(12)<<"ACTIVA";
     else arch<<setw(2)<<" "<<left<<setw(12)<<"INACTIVA";
     arch<<right;

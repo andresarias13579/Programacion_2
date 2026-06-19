@@ -43,6 +43,7 @@ public:
     virtual void leer(ifstream &arch);
     void leeFecha(ifstream &arch,int &fecha);
     virtual void imprimir(ofstream &arch) const;
+    virtual char tipoMetrica() = 0;
 };
 
 #endif //LAB8_2025_2_METRICA_H

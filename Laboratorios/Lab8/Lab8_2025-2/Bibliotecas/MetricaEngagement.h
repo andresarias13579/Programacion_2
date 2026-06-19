@@ -33,6 +33,7 @@ public:
 
     void leer(ifstream &arch) ;
     void imprimir(ofstream &arch) const ;
+    char tipoMetrica() ;
 };
 
 #endif //LAB8_2025_2_METRICAENGAGEMENT_H

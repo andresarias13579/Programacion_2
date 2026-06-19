@@ -65,10 +65,15 @@ void MetricaEngagement::leer(ifstream &arch) {
     char c;
     Metrica::leer(arch);
     arch>>mensajes_chat>>c>>usuarios_unicos_chat>>c>>clips_generados;
+    arch.get();
 }
 
 void MetricaEngagement::imprimir(ofstream &arch) const {
     arch<<setw(7)<<"ME-";
     Metrica::imprimir(arch);
     arch<<setw(10)<<mensajes_chat<<setw(10)<<usuarios_unicos_chat<<setw(10)<<clips_generados<<endl;
+}
+
+char MetricaEngagement::tipoMetrica() {
+    return 'E';
 }

@@ -53,10 +53,15 @@ void MetricaBasica::leer(ifstream &arch) {
     arch>>horas_transmitidas;
     arch.get();
     arch>>espectadores_promedio;
+    arch.get();
 }
 
 void MetricaBasica::imprimir(ofstream &arch) const {
     arch<<setw(7)<<"MB-";
     Metrica::imprimir(arch);
     arch<<setw(10)<<horas_transmitidas<<setw(10)<<espectadores_promedio<<"m"<<endl;
+}
+
+char MetricaBasica::tipoMetrica() {
+    return 'B';
 }
